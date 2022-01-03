@@ -1,0 +1,342 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="Welcome to TechPro’s documentation!" href="../index.html" />
+
+    <meta name="generator" content="sphinx-4.0.2, furo 2021.11.23"/>
+        <title>本地浏览器访问在Linux服务器/集群上的Jupyter notebook - TechPro 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=7f0192ddeb2adecfbaa87ffbcf67d16358b30bc1" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=0af69da206d614734f649b27d4cdc2dd6c31f41d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  body[data-theme="dark"] {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    body:not([data-theme="light"]) {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+</style></head>
+  <body>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">TechPro 1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">TechPro 1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">本地浏览器访问在Linux服务器/集群上的Jupyter notebook</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <div class="section" id="linux-jupyter-notebook">
+<h1>本地浏览器访问在Linux服务器/集群上的Jupyter notebook<a class="headerlink" href="#linux-jupyter-notebook" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>安装必要软件<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>在服务器端安装python3，Anaconda，ipython，jupyter notebook</p>
+</div>
+<div class="section" id="id2">
+<h2>生成密钥<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>服务器输入 <code class="docutils literal notranslate"><span class="pre">ipython</span></code> 命令进入交互式python程序</p></li>
+<li><p>执行以下命令，生成密钥</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">notebook.auth</span> <span class="kn">import</span> <span class="n">passwd</span>
+<span class="n">passwd</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>期间会要求建立密码，该密码为后续远程登陆jupyter notebook使用。最后输出的样子</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">notebook.auth</span> <span class="kn">import</span> <span class="n">passwd</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">passwd</span><span class="p">()</span>
+<span class="n">Enter</span> <span class="n">password</span><span class="p">:</span>
+<span class="n">Verify</span> <span class="n">password</span><span class="p">:</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="s1">'argon2:$argon2id$v=19$m=10240,t=10,p=8$RDYoZluYAGXX6xfMqOQtsA$uFuTIISG07y9oXXdTmMNF92AG4v760XZzd+Dpy2M550'</span>
+</pre></div>
+</div>
+<p>‘argon2:xxxxxx’ 即为密钥，提前复制，后续会使用到。</p>
+</div>
+<div class="section" id="ssl">
+<h2>SSL 加密配置<a class="headerlink" href="#ssl" title="Permalink to this headline">¶</a></h2>
+<p>由于很多服务器/集群 无法直接使用ip:port 访问jupyter服务，需要通过SSL转发。配置SSL需要用到公钥和密钥。直接在 <em>/home/username/.jupyter/</em> 文件夹中执行。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">openssl</span> <span class="n">req</span> <span class="o">-</span><span class="n">x509</span> <span class="o">-</span><span class="n">nodes</span> <span class="o">-</span><span class="n">days</span> <span class="mi">365</span> <span class="o">-</span><span class="n">newkey</span> <span class="n">rsa</span><span class="p">:</span><span class="mi">2048</span> <span class="o">-</span><span class="n">keyout</span> <span class="n">mycert</span><span class="o">.</span><span class="n">pem</span> <span class="o">-</span><span class="n">out</span> <span class="n">mycert</span><span class="o">.</span><span class="n">pem</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="jupyter">
+<h2>配置jupyter服务文件<a class="headerlink" href="#jupyter" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>在服务器运行 <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">notebook</span> <span class="pre">--generate-config</span></code> 初始化notebook配置，此时在 <em>/home/username/.jupyter/</em> 文件夹中新建了 <em>jupyter_notebook_config.py</em> 文件</p></li>
+<li><p>直接在文件开头加入</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">password</span><span class="o">=</span><span class="sa">u</span><span class="s1">'argon2:xxxxxx'</span>  <span class="c1"># 第二步中生成的长密钥</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">certfile</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">'/home/username/.jupyter/mycert.pem'</span>  <span class="c1"># 上一步生成的密钥位置</span>
+<span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">keyfile</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">'/home/username/.jupyter/mykey.key'</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">ip</span> <span class="o">=</span> <span class="s1">'localhost'</span>
+<span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">open_browser</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># 不打开浏览器</span>
+<span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">8889</span>     <span class="c1"># jupyter服务端口，可自定义</span>
+<span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">allow_origin</span> <span class="o">=</span> <span class="s1">'*'</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>此样例中jupyter在服务器的访问端口为8889。</p>
+</div>
+</div>
+<div class="section" id="jupyter-notebook">
+<h2>启动jupyter notebook<a class="headerlink" href="#jupyter-notebook" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>直接启动jupyter notebook：在终端中输入 <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">notebook</span></code> 。如遇notebook命令无法找到问题可以尝试先 <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=$PATH:$HOME/.local/bin</span></code> 再启动notebook。此时命令行大致为如下输出，表明服务已启动。</p></li>
+</ol>
+<img alt="../_images/xqykZXFhtJ35mNH.png" src="../_images/xqykZXFhtJ35mNH.png"/>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">I</span> <span class="mi">22</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mf">12.455</span> <span class="n">NotebookApp</span><span class="p">]</span> <span class="n">Serving</span> <span class="n">notebooks</span> <span class="kn">from</span> <span class="nn">local</span> <span class="n">directory</span><span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">chaow</span>
+<span class="p">[</span><span class="n">I</span> <span class="mi">22</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mf">12.455</span> <span class="n">NotebookApp</span><span class="p">]</span> <span class="n">Jupyter</span> <span class="n">Notebook</span> <span class="mf">6.4.6</span> <span class="ow">is</span> <span class="n">running</span> <span class="n">at</span><span class="p">:</span>
+<span class="p">[</span><span class="n">I</span> <span class="mi">22</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mf">12.455</span> <span class="n">NotebookApp</span><span class="p">]</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8889</span><span class="o">/</span>
+<span class="p">[</span><span class="n">I</span> <span class="mi">22</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mf">12.455</span> <span class="n">NotebookApp</span><span class="p">]</span> <span class="n">Use</span> <span class="n">Control</span><span class="o">-</span><span class="n">C</span> <span class="n">to</span> <span class="n">stop</span> <span class="n">this</span> <span class="n">server</span> <span class="ow">and</span> <span class="n">shut</span> <span class="n">down</span> <span class="nb">all</span> <span class="n">kernels</span> <span class="p">(</span><span class="n">twice</span> <span class="n">to</span> <span class="n">skip</span> <span class="n">confirmation</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>这时在本地直接使用 <code class="docutils literal notranslate"><span class="pre">https://localhost:8889</span></code> 或者 <code class="docutils literal notranslate"><span class="pre">http://</span> <span class="pre">远程ip:8889</span></code> 都是无法打开notebook的。我们需要进行最后一步的ssl设置。在本地cmd或者power shell 中输入</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">N</span> <span class="o">-</span><span class="n">f</span> <span class="o">-</span><span class="n">L</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">8787</span><span class="p">:</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8889</span> <span class="o">-</span><span class="n">p</span> <span class="mi">9135</span> <span class="n">username</span><span class="nd">@远程ip</span>
+</pre></div>
+</div>
+<p>其中:
+- 8787是之后访问jupyter的本地端口（可更改为其他）
+- 8889是jupyter在服务器上的端口（在jupyter配置文件中）
+- 9135是ssh访问的端口（通常为22，我这边是9135）
+- username是登录远程服务器的用户名
+- 远程ip是服务器ip。之后会提示输入密码，</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>输入后命令行呈现假死状态，不用管。</p>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>在本地浏览器输入 <code class="docutils literal notranslate"><span class="pre">https://localhost:8787</span></code> （8787就是上一步设置的本地端口），提示链接不安全，选择继续访问即可。此时应该成功连接到远程jupyter!</p></li>
+<li><p>此时可以关闭刚才假死的命令行，之后的访问只需要在服务器上开启jupyter即可。</p></li>
+</ol>
+<img alt="../_images/2oF3s7kaI6EQYmT.png" src="../_images/2oF3s7kaI6EQYmT.png"/>
+</div>
+</div>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          <a class="prev-page" href="../index.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2022, Zeze |
+          Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+          <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            | <a class="muted-link" href="../_sources/posts/2021-12-28-Jupyter-Notebook-Remote-Cluster.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">本地浏览器访问在Linux服务器/集群上的Jupyter notebook</a><ul>
+<li><a class="reference internal" href="#id1">安装必要软件</a></li>
+<li><a class="reference internal" href="#id2">生成密钥</a></li>
+<li><a class="reference internal" href="#ssl">SSL 加密配置</a></li>
+<li><a class="reference internal" href="#jupyter">配置jupyter服务文件</a></li>
+<li><a class="reference internal" href="#jupyter-notebook">启动jupyter notebook</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    </body>
+</html>
